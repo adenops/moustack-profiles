@@ -1,0 +1,7 @@
+---
+type: container
+name: heat
+register: heat
+image: local-registry:5000/openstack/heat:latest
+files:
+ - etc/heat/heat.conf

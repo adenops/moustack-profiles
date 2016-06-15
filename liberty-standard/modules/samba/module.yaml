@@ -1,0 +1,6 @@
+---
+type: container
+name: samba
+image: local-registry:5000/openstack/samba:latest
+volumes:
+ - /openstack/data/samba:/cinder

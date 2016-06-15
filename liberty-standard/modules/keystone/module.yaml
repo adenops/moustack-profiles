@@ -1,0 +1,7 @@
+---
+type: container
+name: keystone
+register: keystone
+image: local-registry:5000/openstack/keystone:latest
+files:
+ - etc/keystone/keystone.conf

@@ -1,0 +1,25 @@
+---
+type: system
+name: misc
+files:
+ - root/keystonerc
+ - root/.my.cnf
+ - root/validate.yaml
+ - root/validate.env
+ - root/validate.sh
+packages:
+ - vim
+ - strace
+ - tcpdump
+ - bash-completion
+ - curl
+ - bind9-host
+ - bridge-utils
+ - python-openstackclient
+ - python-keystoneclient
+ - python-novaclient
+ - python-neutronclient
+ - python-cinderclient
+ - python-glanceclient
+ - python-heatclient
+ - python-designateclient

@@ -1,0 +1,2 @@
+# note: if NFS share is running in tmpfs, fsid must be set (see exports(5))
+/cinder *(rw,fsid=1,no_root_squash,no_subtree_check)

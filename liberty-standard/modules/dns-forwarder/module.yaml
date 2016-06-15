@@ -1,0 +1,8 @@
+---
+type: container
+name: dns-forwarder
+image: local-registry:5000/openstack/dns-forwarder:latest
+capabilities:
+ - NET_ADMIN # for interfaces operations
+files:
+ - etc/dnsmasq/options/designate.conf

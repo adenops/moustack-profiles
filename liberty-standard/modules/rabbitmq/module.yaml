@@ -1,0 +1,8 @@
+---
+type: container
+name: rabbitmq
+image: local-registry:5000/openstack/rabbitmq:latest
+environments:
+ - rabbitmq.env
+volumes:
+ - /openstack/data/rabbitmq:/var/lib/rabbitmq

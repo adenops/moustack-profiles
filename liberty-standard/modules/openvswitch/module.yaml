@@ -1,0 +1,15 @@
+---
+type: container
+name: openvswitch
+image: local-registry:5000/openstack/openvswitch:latest
+environments:
+ - openvswitch.env
+files:
+ - etc/network/interfaces.d/br-private
+ - etc/network/interfaces.d/br-public
+volumes:
+ - /openstack/data/openvswitch:/var/run/openvswitch
+ - /dev/shm/openvswitch:/etc/openvswitch
+capabilities:
+ - NET_ADMIN
+privileged: true

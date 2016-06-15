@@ -1,0 +1,8 @@
+---
+type: container
+name: mariadb
+image: local-registry:5000/openstack/mariadb:latest
+environments:
+ - mariadb.env
+volumes:
+ - /openstack/data/mysql:/var/lib/mysql

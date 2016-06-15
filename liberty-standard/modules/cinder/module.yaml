@@ -1,0 +1,14 @@
+---
+type: container
+name: cinder
+register: cinder
+image: local-registry:5000/openstack/cinder:latest
+files:
+ - etc/cinder/cinder.conf
+ - etc/cinder/smbfs_shares
+ - etc/cinder/nfs_shares
+volumes:
+ - /openstack/data/cinder:/var/lib/cinder
+capabilities:
+ - SYS_ADMIN
+privileged: true

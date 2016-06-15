@@ -1,0 +1,15 @@
+---
+type: container
+name: nova-compute
+image: local-registry:5000/openstack/nova-compute:latest
+environments:
+ - nova-compute.env
+files:
+ - etc/nova/nova.conf
+ - etc/ceilometer/ceilometer.conf
+ - etc/ceilometer/pipeline.yaml
+volumes:
+ - /openstack/data/nova-compute/var-nova:/var/lib/nova:shared
+ - /openstack/data/libvirt:/var/run/libvirt:ro
+ - /openstack/data/openvswitch:/var/run/openvswitch:ro
+privileged: true

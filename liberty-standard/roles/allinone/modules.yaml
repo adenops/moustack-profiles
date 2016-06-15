@@ -1,0 +1,26 @@
+---
+modules:
+ - misc
+ - logstash
+ - dns-forwarder
+ - mariadb
+ - rabbitmq
+ - memcached
+ - mongo
+ - samba
+ - nfs-server
+ - libvirt
+ - keystone
+ - ceilometer-controller
+ - openvswitch
+ - glance
+ - cinder
+ - neutron-openvswitch
+ - neutron-controller
+ - neutron-lbaas
+ - bind
+ - designate
+ - nova-controller
+ - nova-compute
+ - heat
+ - dashboard

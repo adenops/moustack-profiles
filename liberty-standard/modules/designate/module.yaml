@@ -1,0 +1,10 @@
+---
+type: container
+name: designate
+register: designate
+image: local-registry:5000/openstack/designate:latest
+files:
+ - etc/openstack/variables
+ - etc/designate/designate.conf
+ - etc/bind/rndc.conf
+ - etc/bind/rndc.key

@@ -1,0 +1,9 @@
+allow-ovs br-private
+iface br-private inet manual
+    ovs_type OVSBridge
+    ovs_ports eth2
+
+allow-br-private eth2
+iface eth2 inet manual
+    ovs_bridge br-private
+    ovs_type OVSPort

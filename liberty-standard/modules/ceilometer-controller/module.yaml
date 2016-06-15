@@ -1,0 +1,7 @@
+---
+type: container
+name: ceilometer-controller
+register: ceilometer
+image: local-registry:5000/openstack/ceilometer-controller:latest
+files:
+ - etc/ceilometer/ceilometer.conf

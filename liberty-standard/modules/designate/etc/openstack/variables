@@ -1,0 +1,13 @@
+# API authentication
+export OS_IDENTITY_API_VERSION=3
+export OS_USERNAME=@{keystone_admin_user}
+export OS_USER_DOMAIN_NAME=default
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_TENANT_NAME=@{keystone_admin_project}
+export OS_PASSWORD=@{keystone_admin_password}
+export OS_AUTH_URL=http://127.0.0.1:5000/v3
+export OS_REGION_NAME=@{region}
+
+# designate-related variables
+export designate_server_name=@{designate_server_name}
+export dhcp_domain=@{dhcp_domain}

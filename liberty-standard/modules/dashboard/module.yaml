@@ -1,0 +1,6 @@
+---
+type: container
+name: dashboard
+image: local-registry:5000/openstack/dashboard:latest
+files:
+ - etc/openstack-dashboard/local_settings

@@ -1,0 +1,10 @@
+---
+type: container
+name: bind
+image: local-registry:5000/openstack/bind:latest
+files:
+ - etc/bind/rndc.conf
+ - etc/bind/rndc.key
+ - etc/bind/named.conf.options
+volumes:
+ - /openstack/data/bind:/var/cache/bind

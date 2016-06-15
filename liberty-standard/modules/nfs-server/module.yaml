@@ -1,0 +1,9 @@
+---
+type: container
+name: nfs-server
+image: local-registry:5000/openstack/nfs-server:latest
+files:
+ - etc/exports
+volumes:
+ - /openstack/data/nfs:/cinder
+privileged: true

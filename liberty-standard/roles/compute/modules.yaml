@@ -1,0 +1,7 @@
+---
+modules:
+ - misc
+ - libvirt
+ - openvswitch
+ - neutron-openvswitch
+ - nova-compute
