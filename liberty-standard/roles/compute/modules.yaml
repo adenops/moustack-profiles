@@ -1,6 +1,7 @@
 ---
 modules:
  - kernel-modules
+ - kernel-sysctl
  - misc
  - libvirt
  - openvswitch
