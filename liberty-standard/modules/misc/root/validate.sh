@@ -126,8 +126,7 @@ done
 
 
 log "create ${STACK_NAME} stack"
-# XXX: TODO
-exit 0
+
 START=`get_timestamp_ms`
 
 heat stack-create ${PARAMS} --timeout 60 --template-file validate.yaml ${STACK_NAME} >/dev/null
