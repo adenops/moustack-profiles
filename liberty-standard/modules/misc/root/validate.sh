@@ -106,6 +106,12 @@ if ! openstack server list >/dev/null 2>&1; then
 fi
 
 
+log "wait for heat to be available"
+while ! heat stack-list; do
+	sleep 1
+done
+
+
 log "cleanup existing stacks"
 
 heat stack-list | awk '/^\| [^i].* \|/ {print $2}' | while read stackname; do
