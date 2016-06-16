@@ -112,6 +112,10 @@ while ! heat stack-list; do
 done
 
 
+log "allow SSH in default security group"
+neutron security-group-rule-create --direction ingress --protocol tcp --port-range-min 22 --port-range-max 22 --remote-ip-prefix 0.0.0.0/0 default
+
+
 log "cleanup existing stacks"
 
 heat stack-list | awk '/^\| [^i].* \|/ {print $2}' | while read stackname; do
@@ -178,12 +182,27 @@ if [ -z "$scaleup_url" -o -z "$scaledown_url" ]; then
 fi
 
 
+log "wait for 1 autoscaled instance to ready accessible through SSH"
+COUNT=1
+while [ ${COUNT} -ne 0 ]; do
+	COUNT=1
+
+	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_private_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
+		if ssh -o ProxyCommand="ssh -W %h:%p cirros@${PUBLIC_INSTANCE_FIP}" cirros@${instance_ip} true >/dev/null 2>&1; then
+			COUNT=$((COUNT-1))
+		fi
+	done
+
+	echo "${COUNT} instance(s) left"
+	sleep 1
+done
+
 log "trigger ASG scale up"
 
 running_asg_instances=`openstack server list --name validate_autoscaled_instance | grep -w ACTIVE | wc -l`
 
 if [ "$running_asg_instances" -ne 1 ]; then
-	fatal "we should only have 1 'validate_autoscaled_instance' instance running (current count is $running_asg_instances"
+	fatal "we should only have 1 'validate_autoscaled_instance' instance running (current count is $running_asg_instances)"
 fi
 
 curl --fail --silent -X POST ${scaleup_url}
@@ -201,6 +220,23 @@ while [ "${running_asg_instances}" -ne 2 ]; do
 		fatal "timeout while waiting for ASG to scale up"
 	fi
 done
+
+
+log "wait for 2 autoscaled instance to ready accessible through SSH"
+COUNT=2
+while [ ${COUNT} -ne 0 ]; do
+	COUNT=2
+
+	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_private_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
+		if ssh -o ProxyCommand="ssh -W %h:%p cirros@${PUBLIC_INSTANCE_FIP}" cirros@${instance_ip} true >/dev/null 2>&1; then
+			COUNT=$((COUNT-1))
+		fi
+	done
+
+	echo "${COUNT} instance(s) left"
+	sleep 1
+done
+
 
 log "trigger ASG scale down"
 
