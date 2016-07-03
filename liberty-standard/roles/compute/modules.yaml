@@ -2,6 +2,7 @@
 modules:
  - kernel-modules
  - kernel-sysctl
+ - docker
  - misc
  - libvirt
  - openvswitch
