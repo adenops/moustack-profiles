@@ -1,0 +1,108 @@
+#!/bin/bash
+set -eu
+# This is a simple script that injects user defined iptables rules. It is a
+# very basic implementation, and only allows the user to specify rules, not
+# chains, default policies or more advanced iptables features. It also flushes
+# existing rules from our custom chains at every run, which is not optimal.
+#
+# iptables-save/restore was not enough because it would create duplicate rules
+# when used with the option --noflush, that we need to prevent removing
+# OpenStack rules.
+#
+# This script only takes one argument, start or stop
+
+# Configuration file sample (/etc/moustack-firewall.conf):
+#
+# [FILTER_INPUT]
+# -i lo -j ACCEPT
+# -p tcp --dport 22 -j ACCEPT
+# -m state --state ESTABLISHED,RELATED -j ACCEPT
+# -j REJECT --reject-with icmp-host-unreachable
+#
+# [FILTER_FORWARD]
+#
+# [FILTER_OUTPUT]
+#
+# [NAT_PREROUTING]
+#
+# [NAT_INPUT]
+#
+# [NAT_OUTPUT]
+#
+# [NAT_POSTROUTING]
+#
+
+CHAIN_PREFIX="moustack-"
+action="${1:-start}"
+
+create_custom_chain() {
+	table="$1"
+	chain="$2"
+	custom_chain="$CHAIN_PREFIX$chain"
+
+	if iptables -t "$table" -S "$custom_chain" >/dev/null 2>&1; then
+		echo "flushing chain $custom_chain (table $table)"
+		iptables -t "$table" -F "$custom_chain"
+	else
+		echo "creating chain $custom_chain (table $table)"
+		iptables -t "$table" -N "$custom_chain"
+	fi
+
+	if ! iptables -t "$table" -C "$chain" -j "$custom_chain" 2>/dev/null; then
+		echo "creating rule for chain $custom_chain in $chain"
+		iptables -t "$table" -A "$chain" -j "$custom_chain"
+	fi
+}
+
+delete_custom_chain() {
+	table="$1"
+	chain="$2"
+	custom_chain="$CHAIN_PREFIX$chain"
+
+	if iptables -t "$table" -C "$chain" -j "$custom_chain" 2>/dev/null; then
+		echo "deleting rule for chain $custom_chain in $chain"
+		iptables -t "$table" -D "$chain" -j "$custom_chain"
+	fi
+
+	if iptables -t "$table" -S "$custom_chain" >/dev/null 2>&1; then
+		echo "deleting chain $custom_chain (table $table)"
+		iptables -t "$table" -F "$custom_chain"
+		iptables -t "$table" -X "$custom_chain"
+	fi
+}
+
+add_custom_rule() {
+	table="$1"
+	chain="$2"
+	shift 2
+	custom_chain="$CHAIN_PREFIX$chain"
+
+	echo "adding rule $*"
+	eval "iptables -t '$table' -A '$custom_chain' $*"
+}
+
+table=
+chain=
+while read line
+do
+	case $line in
+		\[FILTER_*\]|[NAT_*\])
+			table="$(echo ${line%_*} | sed -e 's/\(.*\)/\L\1/' -e 's/\[//')"
+			chain="$(echo ${line#*_} | sed -e 's/\]//')"
+			if [ "$action" = "start" ]; then
+				create_custom_chain "$table" "$chain"
+			else
+				delete_custom_chain "$table" "$chain"
+			fi
+			;;
+		"") ;;
+		\#*) ;;
+		*)
+			if [ "$action" = "start" ]; then
+				add_custom_rule "$table" "$chain" $line
+			fi
+			;;
+	esac
+done < /etc/moustack-firewall.conf
+
+echo "iptables rules successfully applied"

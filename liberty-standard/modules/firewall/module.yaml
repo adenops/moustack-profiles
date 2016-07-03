@@ -1,0 +1,11 @@
+---
+type: system
+name: firewall
+files:
+ - usr/local/bin/moustack-firewall
+ - etc/moustack-firewall.conf
+ - etc/systemd/system/moustack-firewall.service
+packages:
+ - iptables
+services:
+ - moustack-firewall

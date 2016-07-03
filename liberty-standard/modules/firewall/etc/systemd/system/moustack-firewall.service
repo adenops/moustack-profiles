@@ -1,0 +1,15 @@
+[Unit]
+Description=moustack firewall configuration
+DefaultDependencies=no
+Before=network.target
+Wants=systemd-modules-load.service local-fs.target
+After=systemd-modules-load.service local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/moustack-firewall start
+ExecStop=/usr/local/bin/moustack-firewall stop
+
+[Install]
+WantedBy=multi-user.target
