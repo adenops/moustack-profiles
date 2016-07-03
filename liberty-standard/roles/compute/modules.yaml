@@ -2,6 +2,7 @@
 modules:
  - kernel-modules
  - kernel-sysctl
+ - repos-xenial
  - docker
  - misc
  - libvirt
