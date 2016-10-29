@@ -112,8 +112,13 @@ while ! heat stack-list; do
 done
 
 
+log "cleanup existing security groups"
+for SEC_GROUP in `neutron security-group-list | grep default | awk '{ print $2; }'`; do
+	neutron security-group-delete ${SEC_GROUP} || true
+done
+
 log "allow SSH in default security group"
-neutron security-group-rule-create --direction ingress --protocol tcp --port-range-min 22 --port-range-max 22 --remote-ip-prefix 0.0.0.0/0 default
+neutron security-group-rule-create --direction ingress --protocol tcp --port-range-min 22 --port-range-max 22 --remote-ip-prefix 0.0.0.0/0 default || true
 
 
 log "cleanup existing stacks"
