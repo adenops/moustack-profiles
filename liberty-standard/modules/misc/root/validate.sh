@@ -256,6 +256,47 @@ while [ "${running_asg_instances}" -ne 1 ]; do
 	fi
 done
 
+
+log "testing live migration"
+
+# count number of compute nodes
+COMPUTE_NODES_COUNT=0
+for node in `echo ${NODES} | sed 's/,/ /g'`; do
+    case ${node} in
+        compute*|allinone) COMPUTE_NODES_COUNT=$((${COMPUTE_NODES_COUNT}+1));;
+    esac
+done
+
+VMNAME=validate_single_instance
+
+if [ ${COMPUTE_NODES_COUNT} -gt 1 ]; then
+	HOST_OLD=`nova show ${VMNAME} | awk '/OS-EXT-SRV-ATTR:host/ { print $4; }'`
+
+	echo "virtual machine ${VMNAME} is currently on host ${HOST_OLD}"
+
+	echo "starting live migration ..."
+	nova live-migration validate_single_instance
+
+	STATUS=NONE
+	while [ "${STATUS}" != "ACTIVE" ]; do
+		STATUS=`nova show ${VMNAME} | awk '/\| status/ { print $4; }'`
+		echo "migration status is ${STATUS}"
+		sleep .5
+	done
+
+	HOST_NEW=`nova show ${VMNAME} | awk '/OS-EXT-SRV-ATTR:host/ { print $4; }'`
+
+	if [ "${HOST_OLD}" = "${HOST_NEW}" ]; then
+		fatal "New host and old host are the same"
+	fi
+
+	echo "virtual machine ${VMNAME} has been migrated to host ${HOST_NEW}"
+
+else
+	warn "skipping live migration check as we only have ${COMPUTE_NODES_COUNT} compute node"
+fi
+
+
 END=`get_timestamp_ms`
 
 notify "Stack validation done in $((END-START))ms"
