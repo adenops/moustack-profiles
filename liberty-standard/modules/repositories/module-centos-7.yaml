@@ -1,0 +1,6 @@
+---
+type: system
+name: repositories
+register: yum-repos
+rawfiles:
+ - etc/yum.repos.d/docker.repo

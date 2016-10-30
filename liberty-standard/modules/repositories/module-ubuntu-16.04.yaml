@@ -1,6 +1,6 @@
 ---
 type: system
-name: repos-xenial
+name: repositories
 register: apt-repos
 packages:
  - apt-transport-https
