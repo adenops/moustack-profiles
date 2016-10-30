@@ -2,5 +2,7 @@
 type: system
 name: repositories
 register: yum-repos
+packages:
+ - centos-release-openstack-liberty
 rawfiles:
  - etc/yum.repos.d/docker.repo
