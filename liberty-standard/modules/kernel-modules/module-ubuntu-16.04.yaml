@@ -2,5 +2,5 @@
 type: system
 name: kernel-modules
 files:
-  - etc/modules-load.d/openstack.conf
+  - etc/modules-load.d/openstack-ubuntu.conf
 register: modprobe
