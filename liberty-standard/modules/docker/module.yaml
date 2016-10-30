@@ -2,7 +2,7 @@
 type: system
 name: docker
 files:
- - etc/systemd/system/docker.service
+ - etc/systemd/system/docker.service.d/docker.conf
 packages:
  - docker-engine=1.11.1-0~xenial
 services:
