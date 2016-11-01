@@ -1,0 +1,29 @@
+---
+modules:
+ - kernel-modules
+ - kernel-sysctl
+ - firewall
+ - repositories
+ - docker
+ - misc
+ - logstash
+ - dns-forwarder
+ - mariadb
+ - rabbitmq
+ - memcached
+ - mongo
+ - samba
+ - nfs-server
+ - keystone
+ - ceilometer-controller
+ - openvswitch
+ - glance
+ - cinder
+ - neutron-openvswitch
+ - neutron-controller
+ - neutron-lbaas
+ - bind
+ - designate
+ - nova-controller
+ - heat
+ - dashboard

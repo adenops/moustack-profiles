@@ -1,0 +1,12 @@
+---
+modules:
+ - kernel-modules
+ - kernel-sysctl
+ - firewall
+ - repositories
+ - docker
+ - misc
+ - libvirt
+ - openvswitch
+ - neutron-openvswitch
+ - nova-compute
