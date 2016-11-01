@@ -1,0 +1,12 @@
+---
+type: system
+name: host-validate
+files:
+ - root/keystonerc
+ - root/.my.cnf
+ - root/validate.yaml
+ - root/validate.env
+ - root/validate.sh
+packages:
+ - bind9-host
+ - bridge-utils
