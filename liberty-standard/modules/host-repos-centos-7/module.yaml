@@ -1,6 +1,6 @@
 ---
 type: system
-name: repositories
+name: host-repos-centos-7
 register: yum-repos
 packages:
  - centos-release-openstack-liberty

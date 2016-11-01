@@ -1,0 +1,18 @@
+---
+type: system
+name: host-packages-ubuntu-16.04
+packages:
+ - docker-engine=1.11.1-0~xenial
+ - vim
+ - strace
+ - tcpdump
+ - bash-completion
+ - curl
+ - python-openstackclient
+ - python-keystoneclient
+ - python-novaclient
+ - python-neutronclient
+ - python-cinderclient
+ - python-glanceclient
+ - python-heatclient
+ - python-designateclient

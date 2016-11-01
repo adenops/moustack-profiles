@@ -1,6 +1,6 @@
 ---
 type: system
-name: repositories
+name: host-repos-ubuntu-16.04
 register: apt-repos
 packages:
  - apt-transport-https
