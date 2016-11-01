@@ -1,6 +1,6 @@
 ---
 type: system
-name: kernel-sysctl
+name: host-kernel-sysctl
+register: sysctl
 files:
   - etc/sysctl.d/99-openstack.conf
-register: sysctl
