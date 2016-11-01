@@ -1,9 +1,0 @@
----
-type: system
-name: docker
-files:
- - etc/systemd/system/docker.service.d/docker.conf
-packages:
- - docker-engine
-services:
- - docker
