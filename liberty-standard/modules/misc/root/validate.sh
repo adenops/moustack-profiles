@@ -76,7 +76,7 @@ get_timestamp_ms() {
 # default variables
 STACK_NAME="${STACK_NAME:-validate}"
 IMAGE_LOCATION="${IMAGE_LOCATION:-http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img}"
-PRIVATE_SUBNET="${PRIVATE_SUBNET:-10.10.33.0/24}"
+TENANT_SUBNET="${TENANT_SUBNET:-10.10.33.0/24}"
 PUBLIC_SUBNET="${PUBLIC_SUBNET:-27.96.24.0/21}"
 PUBLIC_GATEWAY="${PUBLIC_GATEWAY:-27.96.31.254}"
 PUBLIC_INSTANCE_FIP="${PUBLIC_INSTANCE_FIP:-27.96.25.3}"
@@ -90,7 +90,7 @@ ASG_INSTANCE_NAME="heat_autoscaled_instance"
 # build heat command arguments
 PARAMS=""
 PARAMS="${PARAMS} --parameters ImageLocation=${IMAGE_LOCATION}"
-PARAMS="${PARAMS} --parameters PrivateSubnet=${PRIVATE_SUBNET}"
+PARAMS="${PARAMS} --parameters TenantSubnet=${TENANT_SUBNET}"
 PARAMS="${PARAMS} --parameters PublicSubnet=${PUBLIC_SUBNET}"
 PARAMS="${PARAMS} --parameters PublicGateway=${PUBLIC_GATEWAY}"
 PARAMS="${PARAMS} --parameters PublicInstanceFip=${PUBLIC_INSTANCE_FIP}"
@@ -192,7 +192,7 @@ COUNT=1
 while [ ${COUNT} -ne 0 ]; do
 	COUNT=1
 
-	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_private_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
+	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_tenant_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
 		if ssh -o ProxyCommand="ssh -W %h:%p cirros@${PUBLIC_INSTANCE_FIP}" cirros@${instance_ip} true >/dev/null 2>&1; then
 			COUNT=$((COUNT-1))
 		fi
@@ -232,7 +232,7 @@ COUNT=2
 while [ ${COUNT} -ne 0 ]; do
 	COUNT=2
 
-	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_private_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
+	for instance_ip in `openstack server list 2>/dev/null | sed -r 's/.*validate_autoscaled_instance.*validate_tenant_net=([0-9\.]+).*$/\1/;tx;d;:x'`; do
 		if ssh -o ProxyCommand="ssh -W %h:%p cirros@${PUBLIC_INSTANCE_FIP}" cirros@${instance_ip} true >/dev/null 2>&1; then
 			COUNT=$((COUNT-1))
 		fi

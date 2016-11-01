@@ -22,9 +22,9 @@ parameters:
     description: Glance image location
     default: http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
 
-  PrivateSubnet:
+  TenantSubnet:
     type: string
-    description: Private subnet CIDR
+    description: Tenant subnet CIDR
     default: 10.10.33.0/24
 
   PublicSubnet:
@@ -89,17 +89,17 @@ resources:
       disk_format: qcow2
       location: { get_param: ImageLocation }
 
-  private_net:
+  tenant_net:
     type: OS::Neutron::Net
     properties:
-      name: validate_private_net
+      name: validate_tenant_net
 
-  private_subnet:
+  tenant_subnet:
     type: OS::Neutron::Subnet
     properties:
-      name: validate_private_subnet
-      network_id: { get_resource: private_net }
-      cidr: { get_param: PrivateSubnet }
+      name: validate_tenant_subnet
+      network_id: { get_resource: tenant_net }
+      cidr: { get_param: TenantSubnet }
       dns_nameservers:
         - { get_param: DnsServer }
 
@@ -128,14 +128,14 @@ resources:
     type: OS::Neutron::RouterInterface
     properties:
       router_id: { get_resource: router }
-      subnet_id: { get_resource: private_subnet }
+      subnet_id: { get_resource: tenant_subnet }
 
   port:
     type: OS::Neutron::Port
     properties:
-      network: { get_resource: private_net }
+      network: { get_resource: tenant_net }
       fixed_ips:
-        - subnet: { get_resource: private_subnet }
+        - subnet: { get_resource: tenant_subnet }
       security_groups: [{ get_resource: security_group }]
 
   floating_ip:
@@ -192,7 +192,7 @@ resources:
     properties:
       protocol: TCP
       monitors: [ { get_resource: lb_monitor } ]
-      subnet_id: { get_resource: private_subnet }
+      subnet_id: { get_resource: tenant_subnet }
       lb_method: ROUND_ROBIN
       vip:
         protocol_port: 22
@@ -250,7 +250,7 @@ resources:
           image: { get_resource: image }
           key_name: { get_resource: keypair }
           networks:
-            - subnet: { get_resource: private_subnet }
+            - subnet: { get_resource: tenant_subnet }
           user_data:
             str_replace:
               template: |

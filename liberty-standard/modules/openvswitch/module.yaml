@@ -5,7 +5,7 @@ image: local-registry:5000/openstack/openvswitch:latest
 environments:
  - openvswitch.env
 files:
- - etc/network/interfaces.d/br-private
+ - etc/network/interfaces.d/br-tenant
  - etc/network/interfaces.d/br-public
 volumes:
  - /openstack/data/openvswitch:/var/run/openvswitch
