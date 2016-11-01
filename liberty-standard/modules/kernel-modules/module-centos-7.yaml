@@ -1,6 +1,0 @@
----
-type: system
-name: kernel-modules
-files:
-  - etc/modules-load.d/openstack-centos.conf
-register: modprobe

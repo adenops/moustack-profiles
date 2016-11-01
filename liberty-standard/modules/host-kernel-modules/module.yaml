@@ -1,0 +1,6 @@
+---
+type: system
+name: host-kernel-modules
+files:
+  - etc/modules-load.d/openstack.conf
+register: modprobe
