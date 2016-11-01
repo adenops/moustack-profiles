@@ -1,1 +1,1 @@
-@{services_internal_ip}:/cinder
+@{controller_management_ip}:/cinder
