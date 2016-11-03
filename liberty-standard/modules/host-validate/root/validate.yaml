@@ -47,11 +47,6 @@ parameters:
     description: Public subnet floating IP
     default: 27.96.25.42
 
-  DnsServer:
-    type: string
-    description: DNS server
-    default: 8.8.8.8
-
 resources:
   keypair:
     type: OS::Nova::KeyPair
@@ -100,8 +95,6 @@ resources:
       name: validate_tenant_subnet
       network_id: { get_resource: tenant_net }
       cidr: { get_param: TenantSubnet }
-      dns_nameservers:
-        - { get_param: DnsServer }
 
   public_net:
     type: OS::Neutron::Net

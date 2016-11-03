@@ -81,7 +81,6 @@ PUBLIC_SUBNET="${PUBLIC_SUBNET:-27.96.24.0/21}"
 PUBLIC_GATEWAY="${PUBLIC_GATEWAY:-27.96.31.254}"
 PUBLIC_INSTANCE_FIP="${PUBLIC_INSTANCE_FIP:-27.96.25.3}"
 PUBLIC_LB_FIP="${PUBLIC_LB_FIP:-27.96.25.42}"
-DNS_SERVER="${DNS_SERVER:-27.96.24.5}"
 
 # hardcoded variables
 HEAT_DOMAIN="domain.validate"
@@ -95,7 +94,6 @@ PARAMS="${PARAMS} --parameters PublicSubnet=${PUBLIC_SUBNET}"
 PARAMS="${PARAMS} --parameters PublicGateway=${PUBLIC_GATEWAY}"
 PARAMS="${PARAMS} --parameters PublicInstanceFip=${PUBLIC_INSTANCE_FIP}"
 PARAMS="${PARAMS} --parameters PublicLbFip=${PUBLIC_LB_FIP}"
-PARAMS="${PARAMS} --parameters DnsServer=${DNS_SERVER}"
 
 
 log "check keystone authentication"
@@ -172,7 +170,7 @@ fi
 
 log "resolve instance's DNS address"
 
-if ! host instance.${HEAT_DOMAIN} ${DNS_SERVER}; then
+if ! host instance.${HEAT_DOMAIN} 127.0.0.1; then
 	fatal "failed to resolve instance domain name"
 fi
 
