@@ -8,7 +8,6 @@ modules:
  - host-docker
  - host-validate
  - logstash
- - dns-forwarder
  - mariadb
  - rabbitmq
  - memcached
