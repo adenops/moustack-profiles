@@ -1,11 +1,11 @@
 ---
 modules:
- - kernel-modules
- - kernel-sysctl
- - firewall
- - repositories
- - docker
- - misc
+ - host-kernel-modules
+ - host-kernel-sysctl
+ - host-firewall
+ - host-repos-centos-7
+ - host-packages-centos-7
+ - host-docker
  - libvirt
  - openvswitch
  - neutron-openvswitch
