@@ -2,7 +2,7 @@
 type: system
 name: host-packages-centos-7
 packages:
- - docker-engine-1.11.1-1.el7.centos
+ - docker-engine=1.11.1-1.el7.centos
  - vim
  - strace
  - tcpdump
