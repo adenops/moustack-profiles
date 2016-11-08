@@ -96,6 +96,15 @@ PARAMS="${PARAMS} --parameters PublicInstanceFip=${PUBLIC_INSTANCE_FIP}"
 PARAMS="${PARAMS} --parameters PublicLbFip=${PUBLIC_LB_FIP}"
 
 
+# count number of compute nodes
+COMPUTE_NODES_COUNT=0
+for node in `echo ${NODES} | sed 's/,/ /g'`; do
+    case ${node} in
+        compute*|allinone) COMPUTE_NODES_COUNT=$((${COMPUTE_NODES_COUNT}+1));;
+    esac
+done
+
+
 log "check keystone authentication"
 . ${HOME}/keystonerc
 
@@ -106,6 +115,15 @@ fi
 
 log "wait for heat to be available"
 while ! heat stack-list; do
+	sleep 1
+done
+
+
+log "wait for all hypervisors to be connected (need ${COMPUTE_NODES_COUNT})"
+HYPERVISORS_UP=0
+while [ "${HYPERVISORS_UP}" -ne "${COMPUTE_NODES_COUNT}" ]; do
+	HYPERVISORS_UP=`openstack hypervisor list -f csv 2>/dev/null | awk -F '[,"\.]+' '/[0-9]+,/ { print $2; }' | wc -l`
+	echo "currently running hypervisors: ${HYPERVISORS_UP}"
 	sleep 1
 done
 
@@ -261,14 +279,6 @@ done
 
 
 log "testing live migration"
-
-# count number of compute nodes
-COMPUTE_NODES_COUNT=0
-for node in `echo ${NODES} | sed 's/,/ /g'`; do
-    case ${node} in
-        compute*|allinone) COMPUTE_NODES_COUNT=$((${COMPUTE_NODES_COUNT}+1));;
-    esac
-done
 
 VMNAME=validate_single_instance
 
