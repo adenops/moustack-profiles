@@ -7,6 +7,7 @@ files:
  - root/validate.yaml
  - root/validate.env
  - root/validate.sh
+ - root/validate-reboot.sh
 packages:
  - bind9-host
  - bridge-utils

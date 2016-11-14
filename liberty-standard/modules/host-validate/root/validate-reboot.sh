@@ -108,14 +108,20 @@ done
 log "check keystone authentication"
 . ${HOME}/keystonerc
 
-if ! openstack server list >/dev/null 2>&1; then
-	fatal "failed to authenticate"
-fi
+for CMD in \
+	"nova list" \
+	"neutron net-list" \
+	"cinder list" \
+	"glance image-list" \
+	"heat stack-list" \
+	"designate domain-list" \
+	; do
+		log "wait for `echo ${CMD} | awk '{ print \$1; }'` to be available"
 
-
-log "wait for heat to be available"
-while ! heat stack-list; do
-	sleep 1
+		while ! ${CMD} >/dev/null 2>&1; do
+			echo "failed, will attempt again ..."
+			sleep 1
+		done
 done
 
 
@@ -127,64 +133,22 @@ while [ "${HYPERVISORS_UP}" -ne "${COMPUTE_NODES_COUNT}" ]; do
 	sleep 1
 done
 
-
-log "cleanup existing security groups"
-for SEC_GROUP in `neutron security-group-list | grep default | awk '{ print $2; }'`; do
-	neutron security-group-delete ${SEC_GROUP} || true
-done
-
-log "allow SSH in default security group"
-neutron security-group-rule-create --direction ingress --protocol tcp --port-range-min 22 --port-range-max 22 --remote-ip-prefix 0.0.0.0/0 default || true
-
-
-log "cleanup existing stacks"
-
-heat stack-list | awk '/^\| [^i].* \|/ {print $2}' | while read stackname; do
-	echo "killing stack '${stackname}'"
-	echo
-
-	while heat stack-list | grep -q "${stackname}"; do
-		stackstatus=`get_stack_status ${stackname}`
-
-		if [ "${stackstatus}" != "DELETE_IN_PROGRESS" ]; then
-			heat stack-delete "${stackname}" >/dev/null 2>&1 || true
-		fi
-
-		echo "${stackname} status is ${stackstatus}"
-		sleep 1
-	done
-done
-
-
-log "create ${STACK_NAME} stack"
-
-START=`get_timestamp_ms`
-
-heat stack-create ${PARAMS} --timeout 60 --template-file validate.yaml ${STACK_NAME} >/dev/null
-stackstatus="CREATE_IN_PROGRESS"
-
-while [ "${stackstatus}" = "CREATE_IN_PROGRESS" ]; do
-	stackstatus=`get_stack_status ${STACK_NAME}`
-	echo "${STACK_NAME} stack status is ${stackstatus}"
+log "wait for all VMs to be in running state"
+while nova list | grep ${STACK_NAME}_ | grep --quiet -vw Running; do
+	echo "failed, will attempt again ..."
 	sleep 1
 done
 
-if [ "${stackstatus}" != "CREATE_COMPLETE" ]; then
-	fatal "failed to create ${STACK_NAME} stack"
-fi
 
-END=`get_timestamp_ms`
+log "wait for floating IP to be pingable"
 
-notify "Stack created in $((END-START))ms"
+while ! ping -c1 ${PUBLIC_INSTANCE_FIP} >/dev/null 2>&1; do
+	echo "failed, will attempt again ..."
+	sleep 1
+done
+
 
 START=`get_timestamp_ms`
-
-log "ping instance's floating IP"
-
-if ! ping -c1 ${PUBLIC_INSTANCE_FIP}; then
-	fatal "failed to ping instance"
-fi
-
 
 log "resolve instance's DNS address"
 
