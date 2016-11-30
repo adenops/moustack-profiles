@@ -1,7 +1,7 @@
 ---
 type: container
 name: neutron-openvswitch
-image: local-registry:5000/openstack/neutron-openvswitch:latest
+image: moustack/neutron-openvswitch:liberty
 environments:
  - neutron-openvswitch.env
 files:

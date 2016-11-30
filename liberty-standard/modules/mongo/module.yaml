@@ -1,6 +1,6 @@
 ---
 type: container
 name: mongo
-image: local-registry:5000/openstack/mongo:latest
+image: moustack/mongo:liberty
 volumes:
  - /openstack/data/mongo:/data/db

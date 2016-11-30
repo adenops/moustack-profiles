@@ -1,7 +1,7 @@
 ---
 type: container
 name: bind
-image: local-registry:5000/openstack/bind:latest
+image: moustack/bind:liberty
 files:
  - etc/bind/rndc.conf
  - etc/bind/rndc.key

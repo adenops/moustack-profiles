@@ -1,7 +1,7 @@
 ---
 type: container
 name: mariadb
-image: local-registry:5000/openstack/mariadb:latest
+image: moustack/mariadb:liberty
 environments:
  - mariadb.env
 volumes:

@@ -1,7 +1,7 @@
 ---
 type: container
 name: nfs-server
-image: local-registry:5000/openstack/nfs-server:latest
+image: moustack/nfs-server:liberty
 files:
  - etc/exports
 volumes:

@@ -2,7 +2,7 @@
 type: container
 name: cinder
 register: cinder
-image: local-registry:5000/openstack/cinder:latest
+image: moustack/cinder:liberty
 files:
  - etc/cinder/cinder.conf
  - etc/cinder/smbfs_shares

@@ -1,7 +1,7 @@
 ---
 type: container
 name: libvirt
-image: local-registry:5000/openstack/libvirt:latest
+image: moustack/libvirt:liberty
 environments:
  - libvirt.env
 files:

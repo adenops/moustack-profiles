@@ -2,6 +2,6 @@
 type: container
 name: heat
 register: heat
-image: local-registry:5000/openstack/heat:latest
+image: moustack/heat:liberty
 files:
  - etc/heat/heat.conf

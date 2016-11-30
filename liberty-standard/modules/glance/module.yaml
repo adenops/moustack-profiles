@@ -2,7 +2,7 @@
 type: container
 name: glance
 register: glance
-image: local-registry:5000/openstack/glance:latest
+image: moustack/glance:liberty
 files:
  - etc/glance/glance-api.conf
  - etc/glance/glance-registry.conf

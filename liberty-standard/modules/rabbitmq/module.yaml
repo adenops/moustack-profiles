@@ -1,7 +1,7 @@
 ---
 type: container
 name: rabbitmq
-image: local-registry:5000/openstack/rabbitmq:latest
+image: moustack/rabbitmq:liberty
 environments:
  - rabbitmq.env
 volumes:

@@ -1,7 +1,7 @@
 ---
 type: container
 name: nova-compute
-image: local-registry:5000/openstack/nova-compute:latest
+image: moustack/nova-compute:liberty
 environments:
  - nova-compute.env
 files:

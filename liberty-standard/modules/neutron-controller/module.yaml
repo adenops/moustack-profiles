@@ -2,7 +2,7 @@
 type: container
 name: neutron-controller
 register: neutron
-image: local-registry:5000/openstack/neutron-controller:latest
+image: moustack/neutron-controller:liberty
 files:
  - etc/neutron/neutron.conf
  - etc/neutron/dhcp_agent.ini

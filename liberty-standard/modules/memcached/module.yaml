@@ -1,4 +1,4 @@
 ---
 type: container
 name: memcached
-image: local-registry:5000/openstack/memcached:latest
+image: moustack/memcached:liberty

@@ -2,7 +2,7 @@
 type: container
 name: nova-controller
 register: nova
-image: local-registry:5000/openstack/nova-controller:latest
+image: moustack/nova-controller:liberty
 files:
  - etc/nova/nova.conf
 volumes:

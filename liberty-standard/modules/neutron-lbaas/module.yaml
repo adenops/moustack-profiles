@@ -1,7 +1,7 @@
 ---
 type: container
 name: neutron-lbaas
-image: local-registry:5000/openstack/neutron-lbaas:latest
+image: moustack/neutron-lbaas:liberty
 files:
  - etc/neutron/neutron.conf
  - etc/neutron/lbaas_agent.ini

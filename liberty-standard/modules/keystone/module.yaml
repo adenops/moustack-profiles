@@ -2,6 +2,6 @@
 type: container
 name: keystone
 register: keystone
-image: local-registry:5000/openstack/keystone:latest
+image: moustack/keystone:liberty
 files:
  - etc/keystone/keystone.conf

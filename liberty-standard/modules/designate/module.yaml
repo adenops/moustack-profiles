@@ -2,7 +2,7 @@
 type: container
 name: designate
 register: designate
-image: local-registry:5000/openstack/designate:latest
+image: moustack/designate:liberty
 files:
  - etc/openstack/variables
  - etc/designate/designate.conf
