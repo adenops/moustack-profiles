@@ -1,11 +1,11 @@
 allow-ovs br-public
 iface br-public inet static
-    address @{eth1_ip}
-    netmask @{eth1_netmask}
+    address @{public_ip}
+    netmask @{public_netmask}
     ovs_type OVSBridge
-    ovs_ports eth1
+    ovs_ports @{public_iface}
 
-allow-br-public eth1
-iface eth1 inet manual
+allow-br-public @{public_iface}
+iface @{public_iface} inet manual
     ovs_bridge br-public
     ovs_type OVSPort
