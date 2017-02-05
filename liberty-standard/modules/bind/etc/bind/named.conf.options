@@ -15,7 +15,7 @@ options {
 
 	auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { none; };
-	listen-on { 127.0.0.1; @{controller_management_ip}; };
+	listen-on { 127.0.0.1; @{controller_management_ip}; @{controller_public_ip}; };
 
 	// configuration for designate
 	allow-new-zones yes;
