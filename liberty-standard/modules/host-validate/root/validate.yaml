@@ -47,12 +47,16 @@ parameters:
     description: Public subnet floating IP
     default: 27.96.25.42
 
+  SshPublicKey:
+    type: string
+    description: SSH public key
+
 resources:
   keypair:
     type: OS::Nova::KeyPair
     properties:
       name: validate_keypair
-      public_key: ${SSH_PUBLIC_KEY}
+      public_key: { get_param: SshPublicKey }
 
   security_group:
     type: OS::Neutron::SecurityGroup

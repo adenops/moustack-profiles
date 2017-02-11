@@ -81,10 +81,14 @@ PUBLIC_SUBNET="${PUBLIC_SUBNET:-27.96.24.0/21}"
 PUBLIC_GATEWAY="${PUBLIC_GATEWAY:-27.96.31.254}"
 PUBLIC_INSTANCE_FIP="${PUBLIC_INSTANCE_FIP:-27.96.25.3}"
 PUBLIC_LB_FIP="${PUBLIC_LB_FIP:-27.96.25.42}"
+SSH_PUBLIC_KEY="${SSH_PUBLIC_KEY:-$(head -n1 /root/.ssh/authorized_keys)}"
 
 # hardcoded variables
 HEAT_DOMAIN="domain.validate"
 ASG_INSTANCE_NAME="heat_autoscaled_instance"
+
+# save SSH public key to file
+echo "${SSH_PUBLIC_KEY}" >/tmp/validate-stack-sshpublickey
 
 # build heat command arguments
 PARAMS=""
@@ -94,6 +98,7 @@ PARAMS="${PARAMS} --parameters PublicSubnet=${PUBLIC_SUBNET}"
 PARAMS="${PARAMS} --parameters PublicGateway=${PUBLIC_GATEWAY}"
 PARAMS="${PARAMS} --parameters PublicInstanceFip=${PUBLIC_INSTANCE_FIP}"
 PARAMS="${PARAMS} --parameters PublicLbFip=${PUBLIC_LB_FIP}"
+PARAMS="${PARAMS} --parameter-file SshPublicKey=/tmp/validate-stack-sshpublickey"
 
 
 # count number of compute nodes
@@ -160,7 +165,11 @@ log "create ${STACK_NAME} stack"
 
 START=`get_timestamp_ms`
 
-heat stack-create ${PARAMS} --timeout 60 --template-file validate.yaml ${STACK_NAME} >/dev/null
+heat stack-create \
+	${PARAMS} \
+	--timeout 60 \
+	--template-file validate.yaml \
+	${STACK_NAME} >/dev/null
 stackstatus="CREATE_IN_PROGRESS"
 
 while [ "${stackstatus}" = "CREATE_IN_PROGRESS" ]; do
