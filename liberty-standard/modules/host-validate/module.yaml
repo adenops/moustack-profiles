@@ -10,5 +10,4 @@ rawfiles:
  - root/validate.sh
  - root/validate-reboot.sh
 packages:
- - bind9-host
  - bridge-utils
