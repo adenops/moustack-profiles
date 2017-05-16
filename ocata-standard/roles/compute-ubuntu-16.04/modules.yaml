@@ -1,0 +1,12 @@
+---
+modules:
+ - host-kernel-modules
+ - host-kernel-sysctl
+ - host-firewall
+ - host-repos-ubuntu-16.04
+ - host-packages-ubuntu-16.04
+ - host-docker
+ - libvirt
+ - openvswitch
+ - neutron-openvswitch
+ - nova-compute

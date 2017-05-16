@@ -1,0 +1,11 @@
+---
+type: container
+name: nova-controller
+register: nova
+image: moustack/nova-controller:liberty
+files:
+ - etc/nova/nova.conf
+volumes:
+ - /openstack/data/nova-controller:/var/lib/nova
+capabilities:
+ - NET_ADMIN

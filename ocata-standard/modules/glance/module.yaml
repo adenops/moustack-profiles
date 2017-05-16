@@ -1,0 +1,10 @@
+---
+type: container
+name: glance
+register: glance
+image: moustack/glance:liberty
+files:
+ - etc/glance/glance-api.conf
+ - etc/glance/glance-registry.conf
+volumes:
+ - /openstack/data/glance:/var/lib/glance

@@ -1,0 +1,8 @@
+---
+type: container
+name: rabbitmq
+image: moustack/rabbitmq:liberty
+environments:
+ - rabbitmq.env
+volumes:
+ - /openstack/data/rabbitmq:/var/lib/rabbitmq

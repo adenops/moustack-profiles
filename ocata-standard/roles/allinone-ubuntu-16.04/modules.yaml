@@ -1,0 +1,31 @@
+---
+modules:
+ - host-kernel-modules
+ - host-kernel-sysctl
+ - host-firewall
+ - host-repos-ubuntu-16.04
+ - host-packages-ubuntu-16.04
+ - host-docker
+ - host-validate
+ - logstash
+ - mariadb
+ - rabbitmq
+ - memcached
+ - mongo
+ - samba
+ - nfs-server
+ - libvirt
+ - keystone
+ - ceilometer-controller
+ - openvswitch
+ - glance
+ - cinder
+ - neutron-openvswitch
+ - neutron-controller
+ - neutron-lbaas
+ - bind
+ - designate
+ - nova-controller
+ - nova-compute
+ - heat
+ - dashboard

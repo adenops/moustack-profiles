@@ -1,0 +1,7 @@
+---
+type: system
+name: host-docker
+files:
+ - etc/systemd/system/docker.service.d/docker.conf
+services:
+ - docker

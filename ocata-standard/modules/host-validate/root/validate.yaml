@@ -1,0 +1,282 @@
+heat_template_version: 2015-10-15
+
+description: |
+  Moustack validation template
+
+  This heat template helps to validate the following Openstack features :
+   * heat parameter substitution
+   * SSH keypair
+   * security groups
+   * instance flavors
+   * cinder block device mappings
+   * neutron networks and subnets
+   * neutron router
+   * designate DNS service
+   * load balancer v1 service
+   * wait conditions
+   * autoscaling groups
+
+parameters:
+  ImageLocation:
+    type: string
+    description: Glance image location
+    default: http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+
+  TenantSubnet:
+    type: string
+    description: Tenant subnet CIDR
+    default: 10.10.33.0/24
+
+  PublicSubnet:
+    type: string
+    description: Public subnet CIDR
+    default: 27.96.24.0/21
+
+  PublicGateway:
+    type: string
+    description: Public subnet gateway
+    default: 27.96.31.254
+
+  PublicInstanceFip:
+    type: string
+    description: Public subnet floating IP
+    default: 27.96.25.3
+
+  PublicLbFip:
+    type: string
+    description: Public subnet floating IP
+    default: 27.96.25.42
+
+  SshPublicKey:
+    type: string
+    description: SSH public key
+
+resources:
+  keypair:
+    type: OS::Nova::KeyPair
+    properties:
+      name: validate_keypair
+      public_key: { get_param: SshPublicKey }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: validate_security_group
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+        - direction: ingress
+          remote_mode: remote_group_id
+
+  flavor:
+    type: OS::Nova::Flavor
+    properties:
+      ram: 64
+      vcpus: 1
+      disk: 1
+      swap: 0
+
+  image:
+    type: OS::Glance::Image
+    properties:
+      name: validate_image
+      container_format: bare
+      disk_format: qcow2
+      location: { get_param: ImageLocation }
+
+  tenant_net:
+    type: OS::Neutron::Net
+    properties:
+      name: validate_tenant_net
+
+  tenant_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      name: validate_tenant_subnet
+      network_id: { get_resource: tenant_net }
+      cidr: { get_param: TenantSubnet }
+
+  public_net:
+    type: OS::Neutron::Net
+    properties:
+      name: validate_public_net
+      value_specs: { "router:external": true, "provider:network_type": "flat", "provider:physical_network": "public" }
+
+  public_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      name: validate_public_subnet
+      network_id: { get_resource: public_net }
+      cidr: { get_param: PublicSubnet }
+      enable_dhcp: false
+      gateway_ip: { get_param: PublicGateway }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: { get_resource: public_net }
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: tenant_subnet }
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: tenant_net }
+      fixed_ips:
+        - subnet: { get_resource: tenant_subnet }
+      security_groups: [{ get_resource: security_group }]
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_resource: public_net }
+      port_id: { get_resource: port }
+      floating_ip_address: { get_param: PublicInstanceFip }
+    depends_on: router_interface
+
+  wait_handle:
+    type: OS::Heat::WaitConditionHandle
+
+  wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: { get_resource: wait_handle }
+      timeout: 240
+
+  single_instance:
+    type: OS::Nova::Server
+    properties:
+      name: validate_single_instance
+      flavor: { get_resource: flavor }
+      block_device_mapping_v2:
+        - device_name: vda
+          device_type: disk
+          image_id: { get_resource: image }
+          volume_size: 1
+          delete_on_termination: true
+      key_name: { get_resource: keypair }
+      networks:
+        - port: { get_resource: port }
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/sh
+            while ! ping -c 5 www.google.com; do sleep 5 ; done
+            CURL_CMD --data-binary '{"status": "SUCCESS"}' >> /tmp/wc.log 2>&1
+          params:
+            CURL_CMD: { get_attr: ['wait_handle', 'curl_cli'] }
+      user_data_format: RAW
+
+  lb_monitor:
+    type: OS::Neutron::HealthMonitor
+    properties:
+      type: TCP
+      delay: 5
+      max_retries: 5
+      timeout: 5
+
+  lb_pool:
+    type: OS::Neutron::Pool
+    properties:
+      protocol: TCP
+      monitors: [ { get_resource: lb_monitor } ]
+      subnet_id: { get_resource: tenant_subnet }
+      lb_method: ROUND_ROBIN
+      vip:
+        protocol_port: 22
+
+  lb_server:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      protocol_port: 22
+      pool_id: {get_resource: lb_pool}
+
+  lb_floating:
+    type: OS::Neutron::FloatingIP
+    properties:
+      port_id: { get_attr: [ lb_pool, vip, port_id ] }
+      floating_network: { get_resource: public_net }
+      floating_ip_address: { get_param: PublicLbFip }
+
+  lb_member:
+    type: OS::Neutron::PoolMember
+    properties:
+      pool_id: { get_resource: lb_pool }
+      address: { get_attr: [ single_instance, first_address ] }
+      protocol_port: 22
+
+  dns_domain:
+    type: OS::Designate::Domain
+    properties:
+      name: domain.validate.
+      email: root@domain.validate
+      description: "Domain create validation"
+      ttl: 60
+
+  dns_record:
+    type: OS::Designate::Record
+    properties:
+      name: instance.domain.validate.
+      type: A
+      description: "Pointer to Level3 public DNS server"
+      data: 4.2.2.1
+      domain: { get_resource: dns_domain }
+      ttl: 60
+      priority: 100
+
+  asg:
+    type: OS::Heat::AutoScalingGroup
+    properties:
+      desired_capacity: 1
+      max_size: 3
+      min_size: 1
+      resource:
+        type: OS::Nova::Server
+        properties:
+          name: validate_autoscaled_instance
+          flavor: { get_resource: flavor }
+          image: { get_resource: image }
+          key_name: { get_resource: keypair }
+          networks:
+            - subnet: { get_resource: tenant_subnet }
+          user_data:
+            str_replace:
+              template: |
+                #!/bin/sh
+                echo TESTPARAM >/tmp/testfile
+              params:
+                TESTPARAM: "testvalue"
+          user_data_format: RAW
+
+  scaleup:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: { get_resource: asg }
+      cooldown: 60
+      scaling_adjustment: 1
+
+  scaledown:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: { get_resource: asg }
+      cooldown: 60
+      scaling_adjustment: -1
+
+outputs:
+  scaleup_url:
+    description: Webhook to scale up on ASG
+    value: {get_attr: [scaleup, alarm_url]}
+  scaledown_url:
+    description: Webhook to scale down on ASG
+    value: {get_attr: [scaledown, alarm_url]}

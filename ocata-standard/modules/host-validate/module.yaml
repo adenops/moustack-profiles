@@ -1,0 +1,13 @@
+---
+type: system
+name: host-validate
+files:
+ - root/keystonerc
+ - root/.my.cnf
+ - root/validate.yaml
+ - root/validate.env
+rawfiles:
+ - root/validate.sh
+ - root/validate-reboot.sh
+packages:
+ - bridge-utils

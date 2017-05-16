@@ -1,0 +1,7 @@
+---
+type: container
+name: keystone
+register: keystone
+image: moustack/keystone:liberty
+files:
+ - etc/keystone/keystone.conf

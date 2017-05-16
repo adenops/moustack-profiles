@@ -1,0 +1,9 @@
+allow-ovs br-tenant
+iface br-tenant inet manual
+    ovs_type OVSBridge
+    ovs_ports @{tenant_iface}
+
+allow-br-tenant @{tenant_iface}
+iface @{tenant_iface} inet manual
+    ovs_bridge br-tenant
+    ovs_type OVSPort

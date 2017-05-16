@@ -1,0 +1,10 @@
+---
+type: container
+name: logstash
+image: moustack/logstash:liberty
+files:
+ - etc/logstash/conf.d/openstack.conf
+ - var/www/html/config.user.php
+volumes:
+ - /openstack/logs:/openstack/logs
+syslog: false

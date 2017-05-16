@@ -1,0 +1,7 @@
+---
+type: container
+name: heat
+register: heat
+image: moustack/heat:liberty
+files:
+ - etc/heat/heat.conf

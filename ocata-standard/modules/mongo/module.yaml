@@ -1,0 +1,6 @@
+---
+type: container
+name: mongo
+image: moustack/mongo:liberty
+volumes:
+ - /openstack/data/mongo:/data/db

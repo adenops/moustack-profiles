@@ -1,0 +1,12 @@
+---
+type: container
+name: libvirt
+image: moustack/libvirt:liberty
+environments:
+ - libvirt.env
+files:
+ - etc/libvirt/libvirtd.conf
+volumes:
+ - /openstack/data/nova-compute/var-nova:/var/lib/nova:shared
+ - /openstack/data/libvirt:/var/run/libvirt
+privileged: true

@@ -1,0 +1,7 @@
+---
+type: container
+name: ceilometer-controller
+register: ceilometer
+image: moustack/ceilometer-controller:liberty
+files:
+ - etc/ceilometer/ceilometer.conf

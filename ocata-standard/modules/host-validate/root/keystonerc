@@ -1,0 +1,9 @@
+export OS_IDENTITY_API_VERSION=3
+export OS_USERNAME=admin
+export OS_USER_DOMAIN_NAME=default
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_TENANT_NAME=admin
+export OS_PASSWORD=@{keystone_admin_password}
+export OS_AUTH_URL=http://127.0.0.1:5000/v3
+export OS_REGION_NAME=RegionOne
+export PS1='[\u@\h \W(keystone_admin)]\$ '

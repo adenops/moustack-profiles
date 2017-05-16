@@ -1,0 +1,4 @@
+---
+type: container
+name: memcached
+image: moustack/memcached:liberty

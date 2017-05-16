@@ -1,0 +1,15 @@
+---
+type: container
+name: neutron-openvswitch
+image: moustack/neutron-openvswitch:liberty
+environments:
+ - neutron-openvswitch.env
+files:
+ - etc/neutron/neutron.conf
+ - etc/neutron/plugins/ml2/ml2_conf.ini
+ - etc/neutron/plugins/ml2/openvswitch_agent.ini
+volumes:
+ - /openstack/data/openvswitch:/var/run/openvswitch:ro
+ - /dev/shm/openvswitch:/etc/openvswitch:ro
+capabilities:
+ - NET_ADMIN

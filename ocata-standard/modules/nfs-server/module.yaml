@@ -1,0 +1,9 @@
+---
+type: container
+name: nfs-server
+image: moustack/nfs-server:liberty
+files:
+ - etc/exports
+volumes:
+ - /openstack/data/nfs:/cinder
+privileged: true

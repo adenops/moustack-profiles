@@ -1,0 +1,18 @@
+---
+type: system
+name: host-packages-centos-7
+packages:
+ - docker-engine=1.11.1-1.el7.centos
+ - vim
+ - strace
+ - tcpdump
+ - bash-completion
+ - curl
+ - python-openstackclient
+ - python-keystoneclient
+ - python-novaclient
+ - python-neutronclient
+ - python-cinderclient
+ - python-glanceclient
+ - python-heatclient
+ - python-designateclient

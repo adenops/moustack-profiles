@@ -1,0 +1,8 @@
+---
+type: container
+name: mariadb
+image: moustack/mariadb:liberty
+environments:
+ - mariadb.env
+volumes:
+ - /openstack/data/mysql:/var/lib/mysql

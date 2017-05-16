@@ -1,0 +1,19 @@
+---
+type: container
+name: neutron-controller
+register: neutron
+image: moustack/neutron-controller:liberty
+files:
+ - etc/neutron/neutron.conf
+ - etc/neutron/dhcp_agent.ini
+ - etc/neutron/fwaas_driver.ini
+ - etc/neutron/l3_agent.ini
+ - etc/neutron/metadata_agent.ini
+ - etc/neutron/plugins/ml2/ml2_conf.ini
+volumes:
+ - /openstack/data/openvswitch:/var/run/openvswitch:ro
+capabilities:
+ - NET_ADMIN # for interfaces operations
+ - SYS_ADMIN # for namespace operations (needs mount)
+ - SYS_PTRACE # for /proc/xx/exe (rootwrap)
+privileged: true
