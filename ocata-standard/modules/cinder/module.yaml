@@ -2,7 +2,7 @@
 type: container
 name: cinder
 register: cinder
-image: moustack/cinder:liberty
+image: moustack/cinder:ocata
 files:
  - etc/cinder/cinder.conf
  - etc/cinder/smbfs_shares

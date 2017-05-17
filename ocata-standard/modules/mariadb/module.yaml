@@ -1,7 +1,7 @@
 ---
 type: container
 name: mariadb
-image: moustack/mariadb:liberty
+image: moustack/mariadb:ocata
 environments:
  - mariadb.env
 volumes:

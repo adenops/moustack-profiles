@@ -1,4 +1,4 @@
 ---
 type: container
 name: memcached
-image: moustack/memcached:liberty
+image: moustack/memcached:ocata

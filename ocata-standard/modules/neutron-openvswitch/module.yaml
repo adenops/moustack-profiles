@@ -1,7 +1,7 @@
 ---
 type: container
 name: neutron-openvswitch
-image: moustack/neutron-openvswitch:liberty
+image: moustack/neutron-openvswitch:ocata
 environments:
  - neutron-openvswitch.env
 files:

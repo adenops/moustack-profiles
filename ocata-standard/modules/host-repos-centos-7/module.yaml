@@ -3,6 +3,6 @@ type: system
 name: host-repos-centos-7
 register: yum-repos
 packages:
- - centos-release-openstack-liberty
+ - centos-release-openstack-ocata
 rawfiles:
  - etc/yum.repos.d/docker.repo

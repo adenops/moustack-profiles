@@ -1,7 +1,7 @@
 ---
 type: container
 name: rabbitmq
-image: moustack/rabbitmq:liberty
+image: moustack/rabbitmq:ocata
 environments:
  - rabbitmq.env
 volumes:

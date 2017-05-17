@@ -1,7 +1,7 @@
 ---
 type: container
 name: libvirt
-image: moustack/libvirt:liberty
+image: moustack/libvirt:ocata
 environments:
  - libvirt.env
 files:

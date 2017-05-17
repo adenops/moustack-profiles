@@ -1,7 +1,7 @@
 ---
 type: container
 name: openvswitch
-image: moustack/openvswitch:liberty
+image: moustack/openvswitch:ocata
 environments:
  - openvswitch.env
 files:

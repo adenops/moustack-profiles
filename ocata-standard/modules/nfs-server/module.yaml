@@ -1,7 +1,7 @@
 ---
 type: container
 name: nfs-server
-image: moustack/nfs-server:liberty
+image: moustack/nfs-server:ocata
 files:
  - etc/exports
 volumes:

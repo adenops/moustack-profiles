@@ -2,6 +2,6 @@
 type: container
 name: heat
 register: heat
-image: moustack/heat:liberty
+image: moustack/heat:ocata
 files:
  - etc/heat/heat.conf

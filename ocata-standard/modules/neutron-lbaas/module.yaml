@@ -1,7 +1,7 @@
 ---
 type: container
 name: neutron-lbaas
-image: moustack/neutron-lbaas:liberty
+image: moustack/neutron-lbaas:ocata
 files:
  - etc/neutron/neutron.conf
  - etc/neutron/lbaas_agent.ini

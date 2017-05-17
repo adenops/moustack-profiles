@@ -2,7 +2,7 @@
 type: container
 name: nova-controller
 register: nova
-image: moustack/nova-controller:liberty
+image: moustack/nova-controller:ocata
 files:
  - etc/nova/nova.conf
 volumes:

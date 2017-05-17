@@ -1,7 +1,7 @@
 ---
 type: container
 name: logstash
-image: moustack/logstash:liberty
+image: moustack/logstash:ocata
 files:
  - etc/logstash/conf.d/openstack.conf
  - var/www/html/config.user.php

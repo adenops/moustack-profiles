@@ -1,7 +1,7 @@
 ---
 type: container
 name: nova-compute
-image: moustack/nova-compute:liberty
+image: moustack/nova-compute:ocata
 environments:
  - nova-compute.env
 files:

@@ -2,6 +2,6 @@
 type: container
 name: keystone
 register: keystone
-image: moustack/keystone:liberty
+image: moustack/keystone:ocata
 files:
  - etc/keystone/keystone.conf

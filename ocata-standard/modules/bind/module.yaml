@@ -1,7 +1,7 @@
 ---
 type: container
 name: bind
-image: moustack/bind:liberty
+image: moustack/bind:ocata
 files:
  - etc/bind/rndc.conf
  - etc/bind/rndc.key

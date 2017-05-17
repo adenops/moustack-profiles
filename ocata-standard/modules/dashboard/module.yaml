@@ -1,6 +1,6 @@
 ---
 type: container
 name: dashboard
-image: moustack/dashboard:liberty
+image: moustack/dashboard:ocata
 files:
  - etc/openstack-dashboard/local_settings

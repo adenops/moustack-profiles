@@ -2,7 +2,7 @@
 type: container
 name: neutron-controller
 register: neutron
-image: moustack/neutron-controller:liberty
+image: moustack/neutron-controller:ocata
 files:
  - etc/neutron/neutron.conf
  - etc/neutron/dhcp_agent.ini

@@ -1,6 +1,6 @@
 ---
 type: container
 name: samba
-image: moustack/samba:liberty
+image: moustack/samba:ocata
 volumes:
  - /openstack/data/samba:/cinder

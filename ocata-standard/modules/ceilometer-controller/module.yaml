@@ -2,6 +2,6 @@
 type: container
 name: ceilometer-controller
 register: ceilometer
-image: moustack/ceilometer-controller:liberty
+image: moustack/ceilometer-controller:ocata
 files:
  - etc/ceilometer/ceilometer.conf
