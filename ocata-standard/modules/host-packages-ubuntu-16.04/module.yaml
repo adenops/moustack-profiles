@@ -2,7 +2,7 @@
 type: system
 name: host-packages-ubuntu-16.04
 packages:
- - docker-engine=1.11.1-0~xenial
+ - docker-engine=17.05.0~ce-0~ubuntu-xenial
  - vim
  - strace
  - tcpdump
