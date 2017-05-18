@@ -5,3 +5,6 @@ register: keystone
 image: moustack/keystone:ocata
 files:
  - etc/keystone/keystone.conf
+volumes:
+ - /openstack/data/keystone/fernet-keys:/etc/keystone/fernet-keys
+ - /openstack/data/keystone/credential-keys:/etc/keystone/credential-keys
