@@ -16,3 +16,4 @@ packages:
  - python-glanceclient
  - python-heatclient
  - python-designateclient
+ - mysql-client
