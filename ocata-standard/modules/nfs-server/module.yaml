@@ -5,5 +5,6 @@ image: moustack/nfs-server:ocata
 files:
  - etc/exports
 volumes:
- - /openstack/data/nfs:/cinder
+ - /openstack/data/nfs/export:/export
+ - /openstack/data/nfs/lib:/var/lib/nfs
 privileged: true
