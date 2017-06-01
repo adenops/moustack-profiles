@@ -17,3 +17,5 @@ packages:
  - python-heatclient
  - python-designateclient
  - mysql-client
+files:
+ - etc/bash_completion.d/osc.bash_completion
