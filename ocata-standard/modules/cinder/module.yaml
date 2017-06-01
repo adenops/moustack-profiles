@@ -5,7 +5,6 @@ register: cinder
 image: moustack/cinder:ocata
 files:
  - etc/cinder/cinder.conf
- - etc/cinder/smbfs_shares
  - etc/cinder/nfs_shares
 volumes:
  - /openstack/data/cinder:/var/lib/cinder
