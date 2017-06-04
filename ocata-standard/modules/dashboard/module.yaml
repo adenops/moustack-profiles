@@ -3,4 +3,4 @@ type: container
 name: dashboard
 image: moustack/dashboard:ocata
 files:
- - etc/openstack-dashboard/local_settings
+ - etc/openstack-dashboard/local_settings.py
