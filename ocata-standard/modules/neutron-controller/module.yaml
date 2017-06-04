@@ -6,7 +6,6 @@ image: moustack/neutron-controller:ocata
 files:
  - etc/neutron/neutron.conf
  - etc/neutron/dhcp_agent.ini
- - etc/neutron/fwaas_driver.ini
  - etc/neutron/l3_agent.ini
  - etc/neutron/metadata_agent.ini
  - etc/neutron/plugins/ml2/ml2_conf.ini
