@@ -6,8 +6,6 @@ environments:
  - nova-compute.env
 files:
  - etc/nova/nova.conf
- - etc/ceilometer/ceilometer.conf
- - etc/ceilometer/pipeline.yaml
 volumes:
  - /openstack/data/nova-compute/var-nova:/var/lib/nova:shared
  - /openstack/data/libvirt:/var/run/libvirt:ro
